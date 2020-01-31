@@ -2,7 +2,7 @@ version: '2' # Using v2 to be able to use mem_limit & mem_reservation
 
 services:
   website_db:
-    image: mysql:5.7
+    image: mysql:5.7      # MariaDB is recommended, although I'm using this one as it's what my dependencies required at the time of creating this repo.
     container_name: website_db_container
     expose:
       - 3306
@@ -38,10 +38,10 @@ services:
     build: ./public/website
     command: bash -c 'rm -rf /var/www/html/* && git -C /var/www/html clone https://github.com/WordPress/WordPress.git . || git -C /var/www/html pull origin master'     # Replace master with the relevant branch name
     volumes:
-        - ./public/website/www:/var/www/html          # Folder must be empty. 
-
-    mem_limit: 2g
-    mem_reservation: 2g
+        - ./public/website/www:/var/www/html          # Folder must be empty, otherwise, remove `command`
+      
+        # mem_limit: 2g                   # Limit the resources that can be consumed by the container. Helps servers runnning other services
+        # mem_reservation: 2g             # Limit the resources that can be consumed by the container. Helps servers runnning other services
           
     # restart: always               # Not recommended. Can generate a loop where the container seems to be working but it's not.
 
