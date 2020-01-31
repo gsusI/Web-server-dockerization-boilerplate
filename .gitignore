@@ -1,0 +1,10 @@
+# Google Drive indexing files
+desktop.ini
+
+# Private files
+PRIV-ATE-*
+
+# Project specific folders
+public/**/mysql/*
+public/**/www/*
+public/**/.ssh/*
