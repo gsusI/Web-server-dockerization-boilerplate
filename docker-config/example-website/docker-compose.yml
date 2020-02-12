@@ -1,0 +1,40 @@
+version: '2' # Using v2 to be able to use mem_limit & mem_reservation
+
+services:
+  website_db:
+    image: mariadb
+    container_name: website_db_container
+    expose:
+      - 3306
+    ports:
+      - "33060:3306"
+    environment: 
+      MYSQL_DATABASE: website_db
+      MYSQL_USER: website_db_user
+      MYSQL_ROOT_PASSWORD: website_db_root_password
+      MYSQL_PASSWORD: website_db_user_password
+    volumes:
+      - ./../../storage/example-website/data:/var/lib/mysql       # The shared mysql folder, so the container can be recreated without destroying the databases.
+      
+  website_wordpress:
+    image: wordpress:php7.1
+    container_name: website_wordpress_container
+    depends_on:
+      - website_db
+    expose:
+      - 80
+    environment:
+      VIRTUAL_HOST: website_wordpress.com,website_localhost       # List of URLs this wordpress instance will listen to
+      WORDPRESS_DB_HOST: website_db_container:3306
+      WORDPRESS_DB_NAME: website_db_user
+      WORDPRESS_DB_USER: masimpact_user
+      WORDPRESS_DB_PASSWORD: website_db_user_password
+    build: ./config
+    command: bash -c 'rm -rf /var/www/html/* && git -C /var/www/html clone https://github.com/WordPress/WordPress.git . || git -C /var/www/html pull origin master'     # Replace master with the relevant branch name
+    volumes:
+        - ./../../storage/example-website/src:/var/www/html          # Folder must be empty, otherwise, remove `command`
+
+networks:
+  default:
+    external:
+      name: nginx-proxy-network       # Before creating the first instance, you'll need to create the network via command line: `docker network create nginx-proxy-network`

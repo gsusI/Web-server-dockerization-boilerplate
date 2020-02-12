@@ -5,6 +5,5 @@ desktop.ini
 PRIV-ATE-*
 
 # Project specific folders
-public/**/mysql/*
-public/**/www/*
-public/**/.ssh/*
+storage/example-website/data/*
+storage/example-website/src/*

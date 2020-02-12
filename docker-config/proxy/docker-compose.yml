@@ -1,0 +1,18 @@
+version: '2' # Using v2 to be able to use mem_limit & mem_reservation
+
+services:
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./config/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro          # Overwrite options from Nginx proxy
+    # restart: always               # Not recommended during development. Can generate a loop where the container seems to be working but it's not.
+
+networks:
+  default:
+    external:
+      name: nginx-proxy-network       # Before creating the first instance, you'll need to create the network via command line: `docker network create nginx-proxy-network`
