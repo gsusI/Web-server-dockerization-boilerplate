@@ -1,9 +1,8 @@
-# Docker: Ngingx with multiple Wordpress + MySQL 5.7. Using docker-compose and Dockerfile. 
+# Boilerplate to dockerize a web server containing multiple websites.
 
 ## Architecture
-- **Nginx proxy:** An Nginx proxy that listens on the port 80 and dinamically sign up new websites attached to the network.
-- **Web containers:** Each web container defined by a docker-compose.yml config, and a Dockerfile included in its own folder.
-- **Database containers:** Each website can have its own database, or multiple of them can share one.
+- **Nginx proxy:** An Nginx proxy that listens on the port 80 and dinamically sign up new websites attached to its network.
+- **Websites:** Each website has its own docker configuration, giving the flexibility to use whatever services it requires.
 
 ## Directory structure
 ```
